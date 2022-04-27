@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CallDetail from "../components/modal/CallDetail";
 import { ReactComponent as LoadingIcon } from "../assets/icons/loading.svg";
 import { ReactComponent as DotsIcon } from "../assets/icons/dots.svg";
+import getTime from "../helper/getTime";
 export default function CallTable({ calls = [], loading, error }) {
   const [selectedCall, setSelectedCall] = useState(null);
 
@@ -51,7 +52,7 @@ export default function CallTable({ calls = [], loading, error }) {
                   <td className="">{e.branch}</td>
                   <td className="">{e.status}</td>
                   <td className="">{e.price}</td>
-                  <td className="">{e.dueDate}</td>
+                  <td className="">{getTime(e._id)}</td>
                   <td className="flex items-center justify-center">
                     <button
                       className="text-gray-500 hover:text-white"
