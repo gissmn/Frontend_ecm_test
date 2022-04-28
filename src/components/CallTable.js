@@ -91,15 +91,15 @@ const typeBg = (type) => {
 function DeviceIcon(device) {
   switch (device) {
     case "web":
-      return <WebIcon />;
+      return <WebIcon className="mx-auto w-6" />;
     case "app":
-      return <MobileIcon />;
+      return <MobileIcon className="mx-auto w-6" />;
     case "mobile":
-      return <PhoneIcon />;
+      return <PhoneIcon className="mx-auto w-6" />;
     case "operator":
-      return <UserIcon />;
+      return <UserIcon className="mx-auto w-6" />;
     case "callCenter":
-      return <OfficeIcon />;
+      return <OfficeIcon className="mx-auto w-6" />;
     default:
       return "error";
   }

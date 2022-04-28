@@ -1,3 +1,5 @@
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
 import CallList from "./pages/CallList";
 function App() {
   return (
@@ -10,6 +12,9 @@ function App() {
         </div>
       </header>
       <CallList />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+      </Routes>
     </div>
   );
 }
