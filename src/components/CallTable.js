@@ -2,27 +2,28 @@ import React, { useState } from "react";
 import CallDetail from "../components/modal/CallDetail";
 import { ReactComponent as LoadingIcon } from "../assets/icons/loading.svg";
 import { ReactComponent as DotsIcon } from "../assets/icons/dots.svg";
+import { WebIcon, UserIcon, PhoneIcon, MobileIcon, OfficeIcon } from "../assets/imgExports";
 import getTime from "../helper/getTime";
 export default function CallTable({ calls = [], loading, error }) {
   const [selectedCall, setSelectedCall] = useState(null);
 
   return (
     <>
-      <table className="table-fixed   px-10 text-sm text-center">
-        <thead className="bg-gray-400">
-          <tr className="text-xs">
-            <th className="border ">Дуудлагын дугаар</th>
-            <th className="border ">Дуудлага өгсөн хэлбэр</th>
-            <th className="border ">Дуудлагын төрөл</th>
-            <th className="border ">Хаяг</th>
-            <th className="border ">Бүртгэсэн ажилтан</th>
-            <th className="border ">Ажлын нэр</th>
-            <th className="border ">Агуулга</th>
-            <th className="border ">Салбар</th>
-            <th className="border ">Төлөв</th>
-            <th className="border ">Төлбөр</th>
-            <th className="border ">Шийдвэрлэх огноо</th>
-            <th className="border ">Үйлдэл</th>
+      <table className="table-fixed border-separate px-4 borderSpacing text-sm text-center">
+        <thead>
+          <tr className="text-xs bg-gray-300 child:py-4 child:px-1 rounded-xl">
+            <th className="rounded-l-lg">№</th>
+            <th>device</th>
+            <th>Дуудлагын төрөл</th>
+            <th>Хаяг</th>
+            <th>Бүртгэсэн ажилтан</th>
+            <th>Ажлын нэр</th>
+            <th>Агуулга</th>
+            <th>Салбар</th>
+            <th>Төлөв</th>
+            <th>Төлбөр</th>
+            <th>Шийдвэрлэх огноо</th>
+            <th className="rounded-r-lg">Үйлдэл</th>
           </tr>
         </thead>
         <tbody className="">
@@ -41,19 +42,19 @@ export default function CallTable({ calls = [], loading, error }) {
           ) : (
             <>
               {calls.map((e, i) => (
-                <tr className="table-row cursor-pointer hover:bg-blue-300 max-h-2" key={i} onClick={() => setSelectedCall(e)}>
-                  <td className="">{e.callId.toString().padStart(5, "0")}</td>
-                  <td className="">{e.device}</td>
-                  <td className="">{e.type}</td>
-                  <td className="">{e.address}</td>
-                  <td className="">{e.operator}</td>
+                <tr className={`table-row  cursor-pointer ${typeBg(e.type)}`} key={i} onClick={() => setSelectedCall(e)}>
+                  <td className="rounded-l-full">{e.callId.toString().padStart(5, "0")}</td>
+                  <td className="">{DeviceIcon(e.device)}</td>
+                  <td>{e.category}</td>
+                  <td>{e.address}</td>
+                  <td>{e.operator}</td>
                   <td className="truncate">{e.name}</td>
-                  <td className=" truncate max-w-[200px]">{e.detail}</td>
-                  <td className="">{e.branch}</td>
-                  <td className="">{e.status}</td>
-                  <td className="">{e.price}</td>
-                  <td className="">{getTime(e._id)}</td>
-                  <td className="flex items-center justify-center">
+                  <td className="truncate max-w-[200px]">{e.detail}</td>
+                  <td>{e.branch}</td>
+                  <td>{e.status}</td>
+                  <td>{e.price}</td>
+                  <td>{getTime(e._id)}</td>
+                  <td className="rounded-r-full">
                     <button
                       className="text-gray-500 hover:text-white"
                       onClick={(e) => {
@@ -71,4 +72,35 @@ export default function CallTable({ calls = [], loading, error }) {
       {selectedCall && <CallDetail callInfo={selectedCall} onClose={() => setSelectedCall(null)} />}
     </>
   );
+}
+
+const typeBg = (type) => {
+  switch (type) {
+    case "casual":
+      return "bg-yellow-100 hover:bg-yellow-50";
+    case "emergency":
+      return "bg-red-100 hover:bg-red-50";
+    case "special":
+      return "bg-blue-100 hover:bg-blue-50";
+    case "replied":
+      return "bg-green-100 hover:bg-green-50";
+    default:
+      return "bg-yellow-100 hover:bg-ywllow-50";
+  }
+};
+function DeviceIcon(device) {
+  switch (device) {
+    case "web":
+      return <WebIcon />;
+    case "app":
+      return <MobileIcon />;
+    case "mobile":
+      return <PhoneIcon />;
+    case "operator":
+      return <UserIcon />;
+    case "callCenter":
+      return <OfficeIcon />;
+    default:
+      return "error";
+  }
 }

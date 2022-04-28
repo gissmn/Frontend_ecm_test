@@ -11,19 +11,19 @@ import { GET_CALLS, REGISTER_CALL } from "../../apollo/gql/Call/call";
 import CallTable from "../CallTable";
 
 export default function AddCall({ onClose }) {
-  return <Modal title="Дуудлага бүртгэх" child={<Child />} onClose={onClose} />;
+  return <Modal onClose={onClose} title="Дуудлага бүртгэх" child={<Child onClose={onClose} />} />;
 }
 
-const Child = () => {
+const Child = ({ onClose }) => {
   const [call, setCall] = useState({
     userId: "6268fb88fdc52cf5a606b110",
     operatorId: "626921d5cafee0df8efb7f66",
-    name: "asuudal 2",
-    detail: "asuudal garsan 2",
+    name: "",
+    detail: "",
     device: "web",
-    type: "emergency",
-    category: "damage",
-    dueDate: Date.now(),
+    type: "casual",
+    category: "information",
+    dueDate: "",
   });
   const { cityList, districtList, unitList } = Location;
   const [location, setLocation] = useState({ city: "Улаанбаатар", district: "Багануур", unit: "1" });
@@ -32,6 +32,10 @@ const Child = () => {
     onError(e) {
       console.log(e);
     },
+    onCompleted() {
+      onClose();
+    },
+    refetchQueries: [{ query: GET_CALLS, variables: { status: "" }, fetchPolicy: "cache-first" }],
   });
   function cityChange(e) {
     setLocation({
@@ -101,20 +105,69 @@ const Child = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <LabelInput label="Дугаар" input={<Input />} />
+          <LabelInput
+            label="Дуудлагын нэр"
+            input={<input className="border" value={call.name} onChange={(e) => setCall({ ...call, name: e.target.value })} />}
+          />
           <div className="flex gap-4">
-            <LabelInput label="Төрөл" input={<Input />} />
-            <LabelInput label="Ангилал" input={<Input />} />
+            <LabelInput
+              label="Төрөл"
+              input={
+                <select defaultValue={call.type} className="border" onChange={(e) => setCall({ ...call, type: e.target.value })}>
+                  <option value="casual">Энгийн</option>
+                  <option value="emergency">Яаралтай</option>
+                  <option value="replied">Шууд хариулсан</option>
+                  <option value="special">Онцгой</option>
+                </select>
+              }
+            />
+            <LabelInput
+              label="Ангилал"
+              input={
+                <select defaultValue={call.category} className="border" onChange={(e) => setCall({ ...call, category: e.target.value })}>
+                  <option value="information">Мэдээлэл</option>
+                  <option value="damage">Гэмтэл</option>
+                  <option value="work">Ажил</option>
+                  <option value="issue">Өргөдөл, Гомдол</option>
+                </select>
+              }
+            />
           </div>
-          <LabelInput label="Ангилал" input={<textarea className="border w-full resize-none" rows={4} />} />
+          <LabelInput
+            label="Тайлбар"
+            input={
+              <textarea
+                value={call.detail}
+                className="border w-full resize-none"
+                rows={4}
+                onChange={(e) => setCall({ ...call, detail: e.target.value })}
+              />
+            }
+          />
           <div className="flex justify-between flex-wrap">
-            <LabelInput label="Утас" input={<Input type="radio" name="device" />} />
-            <LabelInput label="Веб" input={<Input type="radio" name="device" />} />
-            <LabelInput label="Апп" input={<Input type="radio" name="device" />} />
-            <LabelInput label="Оператор" input={<Input type="radio" name="device" />} />
-            <LabelInput label="Колл Центер" input={<Input type="radio" name="device" />} />
+            <LabelInput
+              label="Веб"
+              input={<input value={"web"} onChange={(e) => setCall({ ...call, device: e.target.value })} type="radio" name="device" defaultChecked />}
+            />
+            <LabelInput
+              label="Утас"
+              input={<input value={"mobile"} onChange={(e) => setCall({ ...call, device: e.target.value })} type="radio" name="device" />}
+            />
+            <LabelInput
+              label="Апп"
+              input={<input value={"app"} onChange={(e) => setCall({ ...call, device: e.target.value })} type="radio" name="device" />}
+            />
+            <LabelInput
+              label="Оператор"
+              input={<input value={"operator"} onChange={(e) => setCall({ ...call, device: e.target.value })} type="radio" name="device" />}
+            />
+            <LabelInput
+              label="Колл Центер"
+              input={<input value={"callCenter"} onChange={(e) => setCall({ ...call, device: e.target.value })} type="radio" name="device" />}
+            />
           </div>
           <LabelInput label="Файл оруулах" input={<Input type="file" name="device" />} />
+          <LabelInput label="Гүйцэтгэх хугацаа" input={<input type="date" onChange={(e) => setCall({ ...call, dueDate: e.target.value })} />} />
           <LabelInput
             label="Оператор"
             input={

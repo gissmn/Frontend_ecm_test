@@ -1,3 +1,10 @@
 @tailwind base;
+
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .borderSpacing {
+    border-spacing: 0 theme("spacing.1");
+  }
+}
