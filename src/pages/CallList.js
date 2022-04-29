@@ -15,7 +15,6 @@ export default function CallList() {
   return (
     <>
       <Header />
-      <button className="btn w-40">TesT button</button>
       <div className="grow flex flex-col">
         <div className="flex justify-between px-4 py-2">
           <div className="flex gap-2">

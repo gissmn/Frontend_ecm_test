@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
@@ -9,7 +10,17 @@ export default function Header() {
         </a>
       </div>
       <div className="text-gray-100">
-        <button className="btn bg-gray-600">login</button>
+        <Link to="/login" className="btn">
+          login
+        </Link>
+        <button
+          onClick={() => {
+            localStorage.removeItem("token");
+            window.location.reload();
+          }}
+          className="btn">
+          logout
+        </button>
       </div>
     </header>
   );
