@@ -3,6 +3,7 @@ import { useLazyQuery } from "@apollo/client";
 import { GET_CALLS } from "../apollo/gql/Call/call";
 import AddCall from "../components/modal/AddCall";
 import CallTable from "../components/CallTable";
+import Header from "../components/Header";
 
 export default function CallList() {
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -12,20 +13,24 @@ export default function CallList() {
     fetchCalls();
   }, [selectedStatus, fetchCalls]);
   return (
-    <div className="grow flex flex-col">
-      <div className="flex justify-between px-4 py-2">
-        <div className="flex gap-2">
-          {tabs.map((e) => (
-            <Tab key={e.title} title={e.title} status={e.status} handleClick={() => setSelectedStatus(e.status)} />
-          ))}
+    <>
+      <Header />
+      <button className="btn w-40">TesT button</button>
+      <div className="grow flex flex-col">
+        <div className="flex justify-between px-4 py-2">
+          <div className="flex gap-2">
+            {tabs.map((e) => (
+              <Tab key={e.title} title={e.title} status={e.status} handleClick={() => setSelectedStatus(e.status)} />
+            ))}
+          </div>
+          <button className="bg-blue-500 rounded-lg px-4 text-white" onClick={() => setAddCall(true)}>
+            Бүртгэх
+          </button>
         </div>
-        <button className="bg-blue-500 rounded-lg px-4 text-white" onClick={() => setAddCall(true)}>
-          Бүртгэх
-        </button>
+        <CallTable calls={getCalls?.getCalls} />
+        {addCall && <AddCall onClose={() => setAddCall(null)} loading={loading} error={error} />}
       </div>
-      <CallTable calls={getCalls?.getCalls} />
-      {addCall && <AddCall onClose={() => setAddCall(null)} loading={loading} error={error} />}
-    </div>
+    </>
   );
 }
 
